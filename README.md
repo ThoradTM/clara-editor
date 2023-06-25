@@ -2,4 +2,5 @@
 scrivener sucks
 
 # You need
--qt6 meta package
+-qt6-base
+-qt6-declarative
