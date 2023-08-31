@@ -1,23 +1,36 @@
-extern crate gtk;
 use gtk::prelude::*;
-use gtk::MessageDialog;
-use gtk::Application;
-use gtk::ButtonsType;
-use gtk::MessageType;
+use gtk::{glib, Application, ApplicationWindow, Button};
 
-fn main() {
-    let app = Application::builder()
+const APP_ID: &str = "org.gtk_rs.clara_editor";
+
+fn main() -> glib::ExitCode {
+    // Create a new application
+    let app = Application::builder().application_id(APP_ID).build();
+    // Run the application
+
+    app.connect_activate(build_ui);
+
+    app.run()
+}
+
+fn build_ui(app: &Application) {
+    let button = Button::builder()
+        .label("Press me!")
+        .margin_top(12)
+        .margin_bottom(12)
+        .margin_start(12)
+        .margin_end(12)
         .build();
-    app.connect_activate(|application| {
-        let dialog = MessageDialog::builder()
-            .application(application)
-            .message_type(MessageType::Info)
-            .buttons(ButtonsType::Ok)
-            .text("Hello world!")
-            .secondary_text("This is an example dialog.")
-            .build();
-        dialog.connect_response(|dialog, _| dialog.destroy());
-        dialog.present();
+
+    button.connect_clicked(|button| {
+        button.set_label("Hello World!");
     });
-    app.run();
+
+    let window = ApplicationWindow::builder()
+        .application(app)
+        .title("Clara Editor")
+        .child(&button)
+        .build();
+    
+    window.present();
 }
