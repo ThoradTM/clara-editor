@@ -1,5 +1,5 @@
 use gtk::prelude::*;
-use gtk::{glib, Application, ApplicationWindow, Button};
+use gtk::{glib, Application, ApplicationWindow, Button, TextView, TextBuffer, PopoverMenuBar, Box};
 
 const APP_ID: &str = "org.gtk_rs.clara_editor";
 
@@ -26,10 +26,28 @@ fn build_ui(app: &Application) {
         button.set_label("Hello World!");
     });
 
+    let textbuffer = TextBuffer::builder()
+    .build();
+
+    let textwindow = TextView::builder()
+    .buffer(&textbuffer)
+    .build();
+
+    let menubar = PopoverMenuBar::builder()
+    .build();
+
+    let gtk_box = Box::builder()
+        .build()
+        .child(button)
+        .child(&textwindow)
+        .child(&menubar);
+
     let window = ApplicationWindow::builder()
         .application(app)
         .title("Clara Editor")
-        .child(&button)
+        .child(&gtk_box)
+        .default_width(1280)
+        .default_height(720)
         .build();
     
     window.present();
